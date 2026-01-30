@@ -18,7 +18,7 @@
       font-size: 15px;
       line-height: 1.6;
       padding: 2rem;
-      max-width: 900px;
+      max-width: 1000px;
       min-height: 100vh;
       position: relative;
     }
@@ -81,10 +81,11 @@
     }
 
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
       margin-top: 1rem;
+      max-width: 100%;
     }
 
     .gallery img {
@@ -110,11 +111,6 @@
       font-style: italic;
     }
 
-    @media (max-width: 600px) {
-      .gallery {
-        grid-template-columns: 1fr;
-      }
-    }
   </style>
 </head>
 <body>
