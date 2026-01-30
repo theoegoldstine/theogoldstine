@@ -12,22 +12,58 @@
     }
 
     body {
-      background: #000;
-      color: #33ff33;
+      background: #0a0808;
+      color: #cc2222;
       font-family: 'Courier New', Courier, monospace;
       font-size: 15px;
       line-height: 1.6;
       padding: 2rem;
       max-width: 720px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Horizon glow */
+    body::before {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(to top, rgba(160, 20, 20, 0.08), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Faint skyline silhouette */
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background:
+        linear-gradient(to top, rgba(15, 8, 8, 0.9) 0%, transparent 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L0 95 L40 95 L40 70 L55 70 L55 85 L70 85 L70 60 L80 60 L80 55 L90 55 L90 60 L100 60 L100 40 L108 40 L108 35 L112 35 L112 40 L120 40 L120 75 L140 75 L140 65 L160 65 L160 80 L200 80 L200 50 L210 50 L210 30 L215 30 L215 25 L220 25 L220 30 L225 30 L225 50 L235 50 L235 80 L260 80 L260 90 L300 90 L300 70 L310 70 L310 45 L320 45 L320 40 L330 40 L330 45 L340 45 L340 70 L350 70 L350 85 L400 85 L400 75 L420 75 L420 55 L430 55 L430 20 L435 20 L435 15 L440 15 L440 20 L445 20 L445 55 L455 55 L455 75 L500 75 L500 90 L540 90 L540 80 L560 80 L560 65 L575 65 L575 50 L580 50 L580 65 L595 65 L595 80 L620 80 L620 85 L680 85 L680 70 L700 70 L700 60 L720 60 L720 45 L728 45 L728 35 L732 35 L732 45 L740 45 L740 60 L760 60 L760 75 L800 75 L800 90 L850 90 L850 80 L870 80 L870 55 L880 55 L880 40 L890 40 L890 55 L900 55 L900 80 L940 80 L940 85 L1000 85 L1000 70 L1020 70 L1020 50 L1030 50 L1030 35 L1035 35 L1035 30 L1040 30 L1040 35 L1045 35 L1045 50 L1055 50 L1055 75 L1100 75 L1100 90 L1150 90 L1150 85 L1200 85 L1200 120 Z' fill='%23120a0a'/%3E%3C/svg%3E") bottom/100% 120px no-repeat;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
     }
 
     a {
-      color: #33ff33;
+      color: #cc2222;
     }
 
     a:hover {
-      background: #33ff33;
-      color: #000;
+      background: #cc2222;
+      color: #0a0808;
     }
 
     .prompt::before {
@@ -39,7 +75,13 @@
     }
 
     .dim {
-      color: #1a9a1a;
+      color: #661515;
+    }
+
+    .location {
+      font-size: 12px;
+      color: #4a1010;
+      letter-spacing: 0.1em;
     }
 
     .cursor {
@@ -53,6 +95,8 @@
 </head>
 <body>
 
+<div class="content">
+
 <pre>
  _____ _                ____       _     _     _   _
 |_   _| |__   ___  ___ / ___| ___ | | __| |___| |_(_)_ __   ___
@@ -60,16 +104,15 @@
   | | | | | |  __/ (_) | |_| | (_) | | (_| \__ \ |_| | | | |  __/
   |_| |_| |_|\___|\___/ \____|\___/|_|\__,_|___/\__|_|_| |_|\___|
 </pre>
+<p class="location">los angeles, california — 34.0522° N, 118.2437° W</p>
 
 <div class="blank"></div>
 
 <p class="dim">-- about.txt --</p>
 <div class="blank"></div>
-<p>Welcome. This is a place for things I build, things I write,</p>
-<p>and things I see through a lens. Part workshop, part darkroom,</p>
-<p>part terminal window left open at 2 AM.</p>
+<p>this is a place for me to share my thoughts on the world, what i have to say, the lens i see life through, and the projects i'm working on.</p>
 <div class="blank"></div>
-<p>Somewhere between the desert and the command line.</p>
+<p>part los angeles. part san francisco. part new york city.</p>
 
 <div class="blank"></div>
 <p class="dim">-- nav --</p>
@@ -82,11 +125,13 @@
 <div class="blank"></div>
 <p class="dim">-- links --</p>
 <div class="blank"></div>
-<p class="prompt"><a href="#">github</a></p>
-<p class="prompt"><a href="#">email</a></p>
+<p class="prompt">theo at theogoldstine dot com</p>
+<p class="prompt">@theogoldstine on <a href="https://x.com/theogoldstine">x</a> and <a href="https://instagram.com/theogoldstine">instagram</a></p>
 
 <div class="blank"></div>
-<p class="dim">sys.online — last updated jan 2025<span class="cursor">_</span></p>
+<p class="dim">sys.online — last updated jan 2025<span class="cursor">█</span></p>
+
+</div>
 
 </body>
 </html>
