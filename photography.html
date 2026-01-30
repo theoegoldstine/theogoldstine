@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Theo Goldstine</title>
+  <title>Photography — Theo Goldstine</title>
   <style>
     * {
       margin: 0;
@@ -18,7 +18,7 @@
       font-size: 15px;
       line-height: 1.6;
       padding: 2rem;
-      max-width: 720px;
+      max-width: 900px;
       min-height: 100vh;
       position: relative;
     }
@@ -66,30 +66,54 @@
       color: #0a0808;
     }
 
-    .prompt::before {
-      content: '> ';
+    .dim {
+      color: #661515;
     }
 
     .blank {
       height: 1.6em;
     }
 
-    .dim {
-      color: #661515;
+    .back {
+      font-size: 13px;
+      margin-bottom: 2rem;
+      display: block;
     }
 
-    .location {
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .gallery img {
+      width: 100%;
+      display: block;
+      border: 1px solid #2a1010;
+      transition: border-color 0.2s;
+    }
+
+    .gallery img:hover {
+      border-color: #cc2222;
+    }
+
+    .gallery .caption {
       font-size: 12px;
-      color: #4a1010;
-      letter-spacing: 0.1em;
+      color: #661515;
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
     }
 
-    .cursor {
-      animation: blink 1s step-end infinite;
+    .empty {
+      color: #661515;
+      font-style: italic;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
+    @media (max-width: 600px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -97,41 +121,69 @@
 
 <div class="content">
 
-<pre>
- _____ _                ____       _     _     _   _
-|_   _| |__   ___  ___ / ___| ___ | | __| |___| |_(_)_ __   ___
-  | | | '_ \ / _ \/ _ \ |  _ / _ \| |/ _` / __| __| | '_ \ / _ \
-  | | | | | |  __/ (_) | |_| | (_) | | (_| \__ \ |_| | | | |  __/
-  |_| |_| |_|\___|\___/ \____|\___/|_|\__,_|___/\__|_|_| |_|\___|
-</pre>
-<p class="location">los angeles, california — 34.0522° N, 118.2437° W</p>
+<p class="back"><a href="index.html">&lt; back</a></p>
+
+<p class="dim">-- photography --</p>
+<div class="blank"></div>
+<p>light, color, and composition. mostly landscapes and architecture. sometimes people.</p>
+<div class="blank"></div>
+<div class="blank"></div>
+<p class="dim">-- gallery --</p>
+
+<div class="gallery" id="gallery"></div>
 
 <div class="blank"></div>
-
-<p class="dim">-- about.txt --</p>
-<div class="blank"></div>
-<p>this is a place for me to share my thoughts on the world, what i have to say, the lens i see life through, and the projects i'm working on.</p>
-<div class="blank"></div>
-<p>part los angeles. part san francisco. part new york city.</p>
+<p class="dim" id="status">loading...</p>
 
 <div class="blank"></div>
-<p class="dim">-- nav --</p>
-<div class="blank"></div>
-<p class="prompt"><a href="#">projects</a> — things I've built, broken, and rebuilt</p>
-<p class="prompt"><a href="#">writing</a> — essays, notes, and longer thoughts</p>
-<p class="prompt"><a href="photography.html">photography</a> — light, color, and composition</p>
-<p class="prompt"><a href="#">etc</a> — everything else that doesn't fit</p>
-
-<div class="blank"></div>
-<p class="dim">-- links --</p>
-<div class="blank"></div>
-<p class="prompt">theo at theogoldstine dot com</p>
-<p class="prompt">@theogoldstine on <a href="https://x.com/theogoldstine">x</a> and <a href="https://instagram.com/theogoldstine">instagram</a></p>
-
-<div class="blank"></div>
-<p class="dim">sys.online — last updated jan 2025<span class="cursor">█</span></p>
+<p class="dim"><a href="index.html">&lt; back</a></p>
 
 </div>
+
+<script>
+(async function () {
+  const gallery = document.getElementById('gallery');
+  const status = document.getElementById('status');
+  const repo = 'theoegoldstine/theogoldstine';
+  const folder = 'photos';
+  const imgExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif'];
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${folder}`);
+    if (!res.ok) throw new Error(res.status);
+    const files = await res.json();
+    const images = files.filter(f =>
+      f.type === 'file' && imgExts.some(ext => f.name.toLowerCase().endsWith(ext))
+    );
+
+    if (images.length === 0) {
+      status.textContent = 'no photos yet.';
+      return;
+    }
+
+    status.textContent = `${images.length} file${images.length === 1 ? '' : 's'} loaded.`;
+
+    images.forEach(img => {
+      const div = document.createElement('div');
+      const el = document.createElement('img');
+      el.src = `photos/${img.name}`;
+      el.alt = img.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      el.loading = 'lazy';
+      const cap = document.createElement('div');
+      cap.className = 'caption';
+      cap.textContent = img.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      div.appendChild(el);
+      div.appendChild(cap);
+      gallery.appendChild(div);
+    });
+  } catch (e) {
+    // Fallback: try loading a known list locally won't work on static,
+    // so just show the empty state
+    status.textContent = 'no photos yet.';
+    status.style.fontStyle = 'italic';
+  }
+})();
+</script>
 
 </body>
 </html>
