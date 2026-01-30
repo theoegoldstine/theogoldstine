@@ -4,24 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Theo Goldstine</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --palm-pink: #f4a5b0;
-      --palm-coral: #e8735a;
-      --palm-teal: #5cc8c8;
-      --palm-sky: #87ceeb;
-      --palm-sand: #f5e6d3;
-      --palm-mint: #a8e6cf;
-      --retro-green: #33ff33;
-      --retro-amber: #ffb000;
-      --crt-dark: #0a0a0f;
-      --crt-glow: rgba(51, 255, 51, 0.08);
-      --text-primary: #e8e0d4;
-      --text-dim: #9a9284;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -29,423 +12,81 @@
     }
 
     body {
-      background: var(--crt-dark);
-      color: var(--text-primary);
-      font-family: 'Space Mono', monospace;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    /* CRT scanline overlay */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.15) 2px,
-        rgba(0, 0, 0, 0.15) 4px
-      );
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    /* Atomic starburst background decoration */
-    .starburst {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      top: -100px;
-      right: -100px;
-      opacity: 0.04;
-      z-index: 0;
-      background:
-        conic-gradient(from 0deg, transparent 0deg, var(--palm-coral) 2deg, transparent 4deg,
-        transparent 30deg, var(--palm-coral) 32deg, transparent 34deg,
-        transparent 60deg, var(--palm-coral) 62deg, transparent 64deg,
-        transparent 90deg, var(--palm-coral) 92deg, transparent 94deg,
-        transparent 120deg, var(--palm-coral) 122deg, transparent 124deg,
-        transparent 150deg, var(--palm-coral) 152deg, transparent 154deg,
-        transparent 180deg, var(--palm-coral) 182deg, transparent 184deg,
-        transparent 210deg, var(--palm-coral) 212deg, transparent 214deg,
-        transparent 240deg, var(--palm-coral) 242deg, transparent 244deg,
-        transparent 270deg, var(--palm-coral) 272deg, transparent 274deg,
-        transparent 300deg, var(--palm-coral) 302deg, transparent 304deg,
-        transparent 330deg, var(--palm-coral) 332deg, transparent 334deg);
-    }
-
-    .starburst-2 {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      bottom: 50px;
-      left: -80px;
-      opacity: 0.03;
-      z-index: 0;
-      background:
-        conic-gradient(from 15deg, transparent 0deg, var(--palm-teal) 2deg, transparent 4deg,
-        transparent 45deg, var(--palm-teal) 47deg, transparent 49deg,
-        transparent 90deg, var(--palm-teal) 92deg, transparent 94deg,
-        transparent 135deg, var(--palm-teal) 137deg, transparent 139deg,
-        transparent 180deg, var(--palm-teal) 182deg, transparent 184deg,
-        transparent 225deg, var(--palm-teal) 227deg, transparent 229deg,
-        transparent 270deg, var(--palm-teal) 272deg, transparent 274deg,
-        transparent 315deg, var(--palm-teal) 317deg, transparent 319deg);
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+      background: #000;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      line-height: 1.6;
       padding: 2rem;
-      position: relative;
-      z-index: 1;
+      max-width: 720px;
     }
 
-    /* Header */
-    header {
-      padding: 4rem 0 3rem;
-      border-bottom: 1px solid rgba(244, 165, 176, 0.15);
-      margin-bottom: 3rem;
-      position: relative;
+    a {
+      color: #33ff33;
     }
 
-    header::before {
-      content: '>';
-      position: absolute;
-      top: 4rem;
-      left: -1.5rem;
-      color: var(--retro-green);
-      font-size: 1.2rem;
-      animation: blink 1.2s step-end infinite;
+    a:hover {
+      background: #33ff33;
+      color: #000;
+    }
+
+    .prompt::before {
+      content: '> ';
+    }
+
+    .blank {
+      height: 1.6em;
+    }
+
+    .dim {
+      color: #1a9a1a;
+    }
+
+    .cursor {
+      animation: blink 1s step-end infinite;
     }
 
     @keyframes blink {
       50% { opacity: 0; }
     }
-
-    .site-title {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 3.5rem;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      background: linear-gradient(135deg, var(--palm-sand) 0%, var(--palm-pink) 50%, var(--palm-coral) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
-    }
-
-    .tagline {
-      font-size: 0.85rem;
-      color: var(--palm-teal);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .tagline span {
-      color: var(--text-dim);
-    }
-
-    /* Diamond separator */
-    .diamond-sep {
-      text-align: center;
-      padding: 2rem 0;
-      color: var(--palm-coral);
-      font-size: 0.7rem;
-      letter-spacing: 1em;
-      opacity: 0.5;
-    }
-
-    /* Navigation cards */
-    .nav-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .nav-card {
-      border: 1px solid rgba(244, 165, 176, 0.12);
-      padding: 2rem;
-      position: relative;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      background: rgba(245, 230, 211, 0.02);
-    }
-
-    .nav-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 0;
-      transition: height 0.3s ease;
-    }
-
-    .nav-card:hover {
-      border-color: rgba(244, 165, 176, 0.3);
-      background: rgba(245, 230, 211, 0.04);
-      transform: translateY(-2px);
-    }
-
-    .nav-card:hover::before {
-      height: 100%;
-    }
-
-    .nav-card:nth-child(1)::before { background: var(--palm-coral); }
-    .nav-card:nth-child(2)::before { background: var(--palm-teal); }
-    .nav-card:nth-child(3)::before { background: var(--palm-pink); }
-    .nav-card:nth-child(4)::before { background: var(--retro-amber); }
-
-    .card-index {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-      letter-spacing: 0.1em;
-    }
-
-    .nav-card:nth-child(1) .card-index { color: var(--palm-coral); }
-    .nav-card:nth-child(2) .card-index { color: var(--palm-teal); }
-    .nav-card:nth-child(3) .card-index { color: var(--palm-pink); }
-    .nav-card:nth-child(4) .card-index { color: var(--retro-amber); }
-
-    .card-title {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      font-size: 1.4rem;
-      margin-bottom: 0.75rem;
-      color: var(--palm-sand);
-    }
-
-    .card-desc {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      line-height: 1.7;
-    }
-
-    /* Terminal-style intro block */
-    .intro {
-      background: rgba(10, 10, 15, 0.6);
-      border: 1px solid rgba(51, 255, 51, 0.1);
-      padding: 2rem;
-      margin-bottom: 3rem;
-      position: relative;
-    }
-
-    .intro::before {
-      content: 'about.txt';
-      position: absolute;
-      top: -0.6rem;
-      left: 1rem;
-      background: var(--crt-dark);
-      padding: 0 0.5rem;
-      font-size: 0.65rem;
-      color: var(--retro-green);
-      letter-spacing: 0.1em;
-    }
-
-    .intro p {
-      font-size: 0.85rem;
-      line-height: 1.9;
-      color: var(--text-primary);
-    }
-
-    .intro p + p {
-      margin-top: 1rem;
-    }
-
-    .highlight {
-      color: var(--palm-teal);
-    }
-
-    .highlight-warm {
-      color: var(--palm-coral);
-    }
-
-    /* Mid-century divider */
-    .mcm-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 3rem 0;
-      opacity: 0.3;
-    }
-
-    .mcm-divider .line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--palm-pink), transparent);
-    }
-
-    .mcm-diamond {
-      width: 8px;
-      height: 8px;
-      background: var(--palm-coral);
-      transform: rotate(45deg);
-    }
-
-    /* Status bar / footer */
-    footer {
-      border-top: 1px solid rgba(244, 165, 176, 0.1);
-      padding: 2rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .status {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-    }
-
-    .status-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: var(--retro-green);
-      border-radius: 50%;
-      margin-right: 0.5rem;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .social-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-
-    .social-links a {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      transition: color 0.2s;
-      text-transform: uppercase;
-    }
-
-    .social-links a:hover {
-      color: var(--palm-teal);
-    }
-
-    /* Palm frond SVG accent */
-    .palm-accent {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      width: 200px;
-      height: 300px;
-      opacity: 0.03;
-      z-index: 0;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .container {
-        padding: 1.5rem;
-      }
-
-      .site-title {
-        font-size: 2.2rem;
-      }
-
-      header {
-        padding: 2.5rem 0 2rem;
-      }
-
-      header::before {
-        display: none;
-      }
-
-      .nav-grid {
-        grid-template-columns: 1fr;
-      }
-
-      footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <div class="starburst"></div>
-  <div class="starburst-2"></div>
+<pre>
+ _____ _                ____       _     _     _   _
+|_   _| |__   ___  ___ / ___| ___ | | __| |___| |_(_)_ __   ___
+  | | | '_ \ / _ \/ _ \ |  _ / _ \| |/ _` / __| __| | '_ \ / _ \
+  | | | | | |  __/ (_) | |_| | (_) | | (_| \__ \ |_| | | | |  __/
+  |_| |_| |_|\___|\___/ \____|\___/|_|\__,_|___/\__|_|_| |_|\___|
+</pre>
 
-  <!-- Palm frond accent -->
-  <svg class="palm-accent" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M180 300 C180 300 160 200 100 150 C60 115 20 110 20 110 C20 110 80 120 120 160 C160 200 180 300 180 300Z" fill="#5cc8c8"/>
-    <path d="M190 300 C190 300 185 220 150 170 C120 125 60 90 60 90 C60 90 130 115 160 165 C185 210 190 300 190 300Z" fill="#f4a5b0"/>
-  </svg>
+<div class="blank"></div>
 
-  <div class="container">
-    <header>
-      <h1 class="site-title">Theo Goldstine</h1>
-      <p class="tagline">projects <span>◆</span> writing <span>◆</span> photography <span>◆</span> etc</p>
-    </header>
+<p class="dim">-- about.txt --</p>
+<div class="blank"></div>
+<p>Welcome. This is a place for things I build, things I write,</p>
+<p>and things I see through a lens. Part workshop, part darkroom,</p>
+<p>part terminal window left open at 2 AM.</p>
+<div class="blank"></div>
+<p>Somewhere between the desert and the command line.</p>
 
-    <div class="intro">
-      <p>Welcome. This is a place for things I build, things I write, and things I see through a lens. Part workshop, part darkroom, part <span class="highlight">terminal window</span> left open at 2 AM.</p>
-      <p>Somewhere between <span class="highlight-warm">the desert</span> and the command line.</p>
-    </div>
+<div class="blank"></div>
+<p class="dim">-- nav --</p>
+<div class="blank"></div>
+<p class="prompt"><a href="#">projects</a> — things I've built, broken, and rebuilt</p>
+<p class="prompt"><a href="#">writing</a> — essays, notes, and longer thoughts</p>
+<p class="prompt"><a href="#">photography</a> — light, color, and composition</p>
+<p class="prompt"><a href="#">etc</a> — everything else that doesn't fit</p>
 
-    <div class="nav-grid">
-      <a href="#" class="nav-card">
-        <div class="card-index">01 //</div>
-        <div class="card-title">Projects</div>
-        <div class="card-desc">Things I've built, broken, and rebuilt. Code, hardware, and everything in between.</div>
-      </a>
-      <a href="#" class="nav-card">
-        <div class="card-index">02 //</div>
-        <div class="card-title">Writing</div>
-        <div class="card-desc">Essays, notes, and longer thoughts. On technology, culture, and the spaces between.</div>
-      </a>
-      <a href="#" class="nav-card">
-        <div class="card-index">03 //</div>
-        <div class="card-title">Photography</div>
-        <div class="card-desc">Light, color, and composition. Mostly landscapes and architecture. Sometimes people.</div>
-      </a>
-      <a href="#" class="nav-card">
-        <div class="card-index">04 //</div>
-        <div class="card-title">Etc</div>
-        <div class="card-desc">Everything else. Bookmarks, recommendations, miscellany, and the things that don't fit.</div>
-      </a>
-    </div>
+<div class="blank"></div>
+<p class="dim">-- links --</p>
+<div class="blank"></div>
+<p class="prompt"><a href="#">github</a></p>
+<p class="prompt"><a href="#">email</a></p>
 
-    <div class="mcm-divider">
-      <div class="line"></div>
-      <div class="mcm-diamond"></div>
-      <div class="line"></div>
-    </div>
-
-    <footer>
-      <div class="status">
-        <span class="status-dot"></span>
-        sys.online — last updated jan 2025
-      </div>
-      <div class="social-links">
-        <a href="#">github</a>
-        <a href="#">email</a>
-      </div>
-    </footer>
-  </div>
+<div class="blank"></div>
+<p class="dim">sys.online — last updated jan 2025<span class="cursor">_</span></p>
 
 </body>
 </html>
