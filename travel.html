@@ -85,19 +85,21 @@
     .header a {
       font-size: 0.7rem;
       font-weight: 400;
-      color: rgba(0, 255, 136, 0.4);
+      color: #00ff88;
       text-decoration: none;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      border: 1px solid rgba(0, 255, 136, 0.15);
+      border: 1px solid rgba(0, 255, 136, 0.4);
       padding: 0.3rem 0.8rem;
       transition: all 0.2s;
+      text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
     }
 
     .header a:hover {
-      color: #00ff88;
+      color: #fff;
       border-color: #00ff88;
-      background: rgba(0, 255, 136, 0.05);
+      background: rgba(0, 255, 136, 0.15);
+      text-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
     }
 
     .info-panel {
@@ -260,7 +262,7 @@
     <span class="prompt">theo@earth:~$</span>
     <h1>travel.log</h1>
   </div>
-  <a href="noir.html">[esc] back</a>
+  <a href="index.html">[esc] back</a>
 </div>
 
 <div class="coords" id="coords">
@@ -424,7 +426,7 @@ function getPolygons(geometry, decodedArcs) {
 }
 
 async function buildGlobeTexture() {
-  const res = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json');
+  const res = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json');
   const topo = await res.json();
   const decodedArcs = decodeArcs(topo);
   const geometries = topo.objects.countries.geometries;
@@ -572,7 +574,7 @@ const texture = new THREE.CanvasTexture(texCanvas);
 texture.wrapS = THREE.RepeatWrapping;
 texture.needsUpdate = true;
 
-const globeGeo = new THREE.SphereGeometry(1, 96, 64);
+const globeGeo = new THREE.SphereGeometry(1, 128, 96);
 const globeMat = new THREE.MeshBasicMaterial({ map: texture });
 const globe = new THREE.Mesh(globeGeo, globeMat);
 scene.add(globe);
@@ -772,6 +774,13 @@ addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
+});
+
+// Escape key navigates back to index
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.location.href = 'index.html';
+  }
 });
 </script>
 
