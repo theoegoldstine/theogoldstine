@@ -239,41 +239,6 @@
       color: rgba(0, 255, 136, 0.7);
     }
 
-    .audio-prompt {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      z-index: 50;
-      border: 1px solid rgba(0, 255, 136, 0.4);
-      padding: 0.6rem 1rem;
-      background: rgba(0, 10, 0, 0.85);
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      color: #00ff88;
-      text-transform: uppercase;
-      animation: pulse-border 2s ease-in-out infinite;
-      transition: opacity 0.4s, transform 0.4s;
-    }
-
-    .audio-prompt:hover {
-      background: rgba(0, 255, 136, 0.1);
-      border-color: #00ff88;
-    }
-
-    .audio-prompt.hidden {
-      opacity: 0;
-      transform: translateY(10px);
-      pointer-events: none;
-    }
-
-    @keyframes pulse-border {
-      0%, 100% { border-color: rgba(0, 255, 136, 0.2); }
-      50% { border-color: rgba(0, 255, 136, 0.6); }
-    }
-
     @media (max-width: 768px) {
       .country-list { display: none; }
       .coords { display: none; }
@@ -325,8 +290,6 @@
   <div class="status" id="hover-status"></div>
 </div>
 
-<div class="audio-prompt" id="audio-prompt">> click to enable audio — hover countries to hear anthems</div>
-
 <script type="importmap">
 {
   "imports": {
@@ -344,35 +307,35 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Keys here match the `properties.name` values from the TopoJSON (countries-50m)
 const VISITED_DATA = {
-  'United States of America': { display: 'United States',  native: 'United States',     region: 'North America',   dates: 'Home',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/6/65/Star_Spangled_Banner_instrumental.ogg' },
-  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2010, 2024, 2025',          anthem: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Himno_Nacional_Mexicano_instrumental.ogg' },
-  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2024, 2025, 2026',    anthem: 'https://upload.wikimedia.org/wikipedia/commons/0/03/United_States_Navy_Band_-_God_Save_the_Queen.oga' },
-  'Turkey':                    { display: 'Turkiye',        native: 'Türkiye',           region: 'Europe / Asia',   dates: '2022',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Istikl%C3%A2l_Marsi_instrumetal.ogg' },
-  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2026',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Swiss_Psalm_%28official_instrumental%29.ogg' },
-  'Spain':                     { display: 'Spain',          native: 'España',            region: 'Europe',          dates: '2024, 2025',                 anthem: 'https://upload.wikimedia.org/wikipedia/commons/8/81/Himno_Nacional_de_Espa%C3%B1a.ogg' },
-  'Portugal':                  { display: 'Portugal',       native: 'Portugal',          region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/5/58/A_Portuguesa.ogg' },
-  'Poland':                    { display: 'Poland',         native: 'Polska',            region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Mazurek_Dabrowskiego.ogg' },
-  'Netherlands':               { display: 'Netherlands',    native: 'Nederland',         region: 'Europe',          dates: '2022, 2023',                 anthem: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/United_States_Navy_Band_-_Het_Wilhelmus.ogg' },
-  'Italy':                     { display: 'Italy',          native: 'Italia',            region: 'Europe',          dates: '2013, 2022, 2025',          anthem: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Inno_di_Mameli_instrumental.ogg' },
-  'Ireland':                   { display: 'Ireland',        native: 'Éire',              region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/United_States_Navy_Band_-_Amhr%C3%A1n_na_bhFiann.ogg' },
-  'Iceland':                   { display: 'Iceland',        native: 'Ísland',            region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Lofs%C3%B6ngur.ogg' },
-  'Hungary':                   { display: 'Hungary',        native: 'Magyarország',      region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Hu-magyarhimnusz.ogg' },
-  'Greece':                    { display: 'Greece',         native: 'Ελλάδα',            region: 'Europe',          dates: '2022',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Hymn_to_liberty_instrumental.oga' },
-  'Germany':                   { display: 'Germany',        native: 'Deutschland',       region: 'Europe',          dates: '2022, 2024, 2025',          anthem: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/German_national_anthem_performed_by_the_US_Navy_Band.ogg' },
-  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025',          anthem: 'https://upload.wikimedia.org/wikipedia/commons/3/30/La_Marseillaise.ogg' },
-  'Czechia':                   { display: 'Czechia',        native: 'Česko',             region: 'Europe',          dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Czech_anthem.ogg' },
-  'Belgium':                   { display: 'Belgium',        native: 'België',            region: 'Europe',          dates: '2022',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/La_Braban%C3%A7onne.oga' },
-  'Austria':                   { display: 'Austria',        native: 'Österreich',        region: 'Europe',          dates: '2022, 2025',                 anthem: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Land_der_Berge_Land_am_Strome_instrumental.ogg' },
-  'Thailand':                  { display: 'Thailand',       native: 'ประเทศไทย',           region: 'Southeast Asia',  dates: '2024',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Thai_National_Anthem_-_US_Navy_Band.ogg' },
-  'Taiwan':                    { display: 'Taiwan',         native: '臺灣',               region: 'East Asia',       dates: '2024',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/9/98/National_Anthem_of_the_Republic_of_China.ogg' },
-  'South Korea':               { display: 'South Korea',    native: '대한민국',              region: 'East Asia',       dates: '2024',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/The_National_Anthem_of_the_Republic_of_Korea.ogg' },
-  'Japan':                     { display: 'Japan',          native: '日本',               region: 'East Asia',       dates: '2024',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Kimi_ga_Yo_instrumental.ogg' },
-  'Israel':                    { display: 'Israel',         native: 'ישראל',             region: 'Middle East',     dates: '2012, 2022, 2023, 2025',    anthem: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Hatikvah_instrumental.ogg' },
-  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2023, 2024',                 anthem: 'https://upload.wikimedia.org/wikipedia/commons/9/94/Jana_Gana_Mana_instrumental.ogg' },
-  'China':                     { display: 'China',          native: '中国',               region: 'East Asia',       dates: '2024',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/March_of_the_Volunteers_instrumental.ogg' },
-  'Morocco':                   { display: 'Morocco',        native: 'المغرب',             region: 'North Africa',    dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/National_Anthem_of_Morocco.ogg' },
-  'Argentina':                 { display: 'Argentina',      native: 'Argentina',         region: 'South America',   dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/c/cd/Himno_Nacional_Argentino_instrumental.ogg' },
-  'Uruguay':                   { display: 'Uruguay',        native: 'Uruguay',           region: 'South America',   dates: '2025',                       anthem: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/United_States_Navy_Band_-_National_Anthem_of_Uruguay_%28complete%29.ogg' },
+  'United States of America': { display: 'United States',  native: 'United States',     region: 'North America',   dates: 'Home' },
+  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2010, 2024, 2025' },
+  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2024, 2025, 2026' },
+  'Turkey':                    { display: 'Turkiye',        native: 'Türkiye',           region: 'Europe / Asia',   dates: '2022' },
+  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2026' },
+  'Spain':                     { display: 'Spain',          native: 'España',            region: 'Europe',          dates: '2024, 2025' },
+  'Portugal':                  { display: 'Portugal',       native: 'Portugal',          region: 'Europe',          dates: '2025' },
+  'Poland':                    { display: 'Poland',         native: 'Polska',            region: 'Europe',          dates: '2025' },
+  'Netherlands':               { display: 'Netherlands',    native: 'Nederland',         region: 'Europe',          dates: '2022, 2023' },
+  'Italy':                     { display: 'Italy',          native: 'Italia',            region: 'Europe',          dates: '2013, 2022, 2025' },
+  'Ireland':                   { display: 'Ireland',        native: 'Éire',              region: 'Europe',          dates: '2025' },
+  'Iceland':                   { display: 'Iceland',        native: 'Ísland',            region: 'Europe',          dates: '2025' },
+  'Hungary':                   { display: 'Hungary',        native: 'Magyarország',      region: 'Europe',          dates: '2025' },
+  'Greece':                    { display: 'Greece',         native: 'Ελλάδα',            region: 'Europe',          dates: '2022' },
+  'Germany':                   { display: 'Germany',        native: 'Deutschland',       region: 'Europe',          dates: '2022, 2024, 2025' },
+  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025' },
+  'Czechia':                   { display: 'Czechia',        native: 'Česko',             region: 'Europe',          dates: '2025' },
+  'Belgium':                   { display: 'Belgium',        native: 'België',            region: 'Europe',          dates: '2022' },
+  'Austria':                   { display: 'Austria',        native: 'Österreich',        region: 'Europe',          dates: '2022, 2025' },
+  'Thailand':                  { display: 'Thailand',       native: 'ประเทศไทย',           region: 'Southeast Asia',  dates: '2024' },
+  'Taiwan':                    { display: 'Taiwan',         native: '臺灣',               region: 'East Asia',       dates: '2024' },
+  'South Korea':               { display: 'South Korea',    native: '대한민국',              region: 'East Asia',       dates: '2024' },
+  'Japan':                     { display: 'Japan',          native: '日本',               region: 'East Asia',       dates: '2024' },
+  'Israel':                    { display: 'Israel',         native: 'ישראל',             region: 'Middle East',     dates: '2012, 2022, 2023, 2025' },
+  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2023, 2024' },
+  'China':                     { display: 'China',          native: '中国',               region: 'East Asia',       dates: '2024' },
+  'Morocco':                   { display: 'Morocco',        native: 'المغرب',             region: 'North Africa',    dates: '2025' },
+  'Argentina':                 { display: 'Argentina',      native: 'Argentina',         region: 'South America',   dates: '2025' },
+  'Uruguay':                   { display: 'Uruguay',        native: 'Uruguay',           region: 'South America',   dates: '2025' },
 };
 const VISITED_SET = new Set(Object.keys(VISITED_DATA));
 
@@ -742,73 +705,6 @@ function getCountryAtUV(uv) {
   return null;
 }
 
-// ── Anthem audio ──────────────────────────────────────
-
-let audioUnlocked = false;
-let currentAnthem = null;
-let currentAnthemCountry = null;
-const FADE_DURATION = 600;
-const audioPromptEl = document.getElementById('audio-prompt');
-
-// Unlock audio on any click
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  audioPromptEl.classList.add('hidden');
-  // Create and play a silent buffer to unlock the audio context
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const buf = ctx.createBuffer(1, 1, 22050);
-  const src = ctx.createBufferSource();
-  src.buffer = buf;
-  src.connect(ctx.destination);
-  src.start(0);
-}
-document.addEventListener('click', unlockAudio, { once: false });
-
-function fadeOutAnthem() {
-  if (!currentAnthem) return;
-  const audio = currentAnthem;
-  const startVol = audio.volume;
-  const startTime = performance.now();
-  function fade() {
-    const elapsed = performance.now() - startTime;
-    const t = Math.min(elapsed / FADE_DURATION, 1);
-    audio.volume = startVol * (1 - t);
-    if (t < 1) {
-      requestAnimationFrame(fade);
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 1;
-    }
-  }
-  fade();
-  currentAnthem = null;
-  currentAnthemCountry = null;
-}
-
-function playAnthem(countryName, url) {
-  if (!audioUnlocked) return;
-  if (currentAnthemCountry === countryName) return;
-  fadeOutAnthem();
-  const audio = new Audio(url);
-  audio.volume = 0;
-  audio.loop = true;
-  currentAnthem = audio;
-  currentAnthemCountry = countryName;
-  audio.play().then(() => {
-    const startTime = performance.now();
-    function fadeIn() {
-      if (currentAnthem !== audio) return;
-      const elapsed = performance.now() - startTime;
-      const t = Math.min(elapsed / FADE_DURATION, 1);
-      audio.volume = t * 0.35;
-      if (t < 1) requestAnimationFrame(fadeIn);
-    }
-    fadeIn();
-  }).catch(() => {});
-}
-
 renderer.domElement.addEventListener('mousemove', (e) => {
   mouse.x = (e.clientX / innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / innerHeight) * 2 + 1;
@@ -826,14 +722,11 @@ renderer.domElement.addEventListener('mousemove', (e) => {
       hoverDatesEl.textContent = data.dates ? '// ' + data.dates : '';
       hoverStatusEl.textContent = '[VISITED]';
       hoverEl.classList.add('visible');
-      if (data.anthem) playAnthem(country.name, data.anthem);
     } else {
       hoverEl.classList.remove('visible');
-      fadeOutAnthem();
     }
   } else {
     hoverEl.classList.remove('visible');
-    fadeOutAnthem();
   }
 });
 
