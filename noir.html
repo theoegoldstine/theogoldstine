@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theo Goldstine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5e6d0;
+      color: #2a2520;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Alex Israel sunset gradient sky */
+    .sky {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(
+        180deg,
+        #4a90d9 0%,
+        #7bb8e8 15%,
+        #a8d4f0 25%,
+        #f5c8a8 40%,
+        #f4a582 50%,
+        #ef8c6e 58%,
+        #e8735a 65%,
+        #d4567a 75%,
+        #c44b8c 85%,
+        #a83c7a 100%
+      );
+      z-index: 0;
+    }
+
+    /* Palm tree silhouettes */
+    .palms {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .palms svg {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 5rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 2px 40px rgba(0, 0, 0, 0.15);
+      margin-bottom: 0.5rem;
+    }
+
+    .location {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 4rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #3a3530;
+    }
+
+    .card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c44b8c;
+      margin-bottom: 1.2rem;
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-list li {
+      margin-bottom: 1rem;
+    }
+
+    .nav-list a {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #2a2520;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-list a:hover {
+      color: #e8735a;
+    }
+
+    .nav-list .desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: #8a8078;
+      margin-top: 0.15rem;
+    }
+
+    .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .links-row a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #e8735a;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(232, 115, 90, 0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+
+    .links-row a:hover {
+      border-color: #e8735a;
+    }
+
+    .links-row span {
+      font-size: 0.9rem;
+      color: #8a8078;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 3rem;
+      }
+
+      .container {
+        padding: 4rem 1.5rem 3rem;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+
+      .nav-list a {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sky"></div>
+
+<!-- Palm tree silhouettes -->
+<div class="palms">
+  <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left palm -->
+    <g opacity="0.12">
+      <path d="M120 800 L125 580 Q130 500 128 450 Q110 380 60 320 Q30 290 -10 270 Q40 300 80 340 Q115 375 125 430 Q120 370 90 300 Q70 250 40 210 Q80 250 110 310 Q130 360 132 420 Q140 350 170 280 Q195 230 230 200 Q200 240 175 290 Q150 340 138 410 Q155 350 200 290 Q230 250 270 230 Q235 260 205 300 Q170 350 145 420 L130 500 L135 800Z" fill="#1a1510"/>
+      <!-- Left palm fronds -->
+      <path d="M125 450 Q80 400 20 380 Q-20 370 -50 375 Q-10 365 40 370 Q90 380 128 430" fill="#1a1510"/>
+      <path d="M130 440 Q160 370 240 330 Q280 315 320 320 Q275 320 240 340 Q180 370 135 435" fill="#1a1510"/>
+    </g>
+    <!-- Right palm -->
+    <g opacity="0.1">
+      <path d="M1050 800 L1055 520 Q1060 440 1055 380 Q1040 310 990 250 Q960 220 920 200 Q970 230 1010 270 Q1045 310 1052 360 Q1045 290 1010 220 Q985 170 950 130 Q1000 170 1035 240 Q1058 300 1058 360 Q1070 280 1110 210 Q1140 160 1180 130 Q1145 170 1115 220 Q1085 280 1065 350 Q1085 280 1140 220 Q1175 185 1220 170 Q1180 195 1145 235 Q1100 290 1070 370 L1060 440 L1065 800Z" fill="#1a1510"/>
+    </g>
+    <!-- Small right palm -->
+    <g opacity="0.07">
+      <path d="M950 800 L953 620 Q955 570 952 530 Q940 480 910 440 Q935 460 950 500 Q958 530 956 560 Q960 510 990 460 Q1010 430 1035 420 Q1015 440 995 470 Q970 510 958 550 L955 600 L958 800Z" fill="#1a1510"/>
+    </g>
+  </svg>
+</div>
+
+<div class="container">
+
+  <h1>Theo Goldstine</h1>
+  <p class="location">Los Angeles, California — 34.0522° N, 118.2437° W</p>
+
+  <div class="card">
+    <div class="card-label">About</div>
+    <p>This is a place for me to share my thoughts on the world, what I have to say, the lens I see life through, and the projects I'm working on.</p>
+    <br>
+    <p>Part Los Angeles. Part San Francisco. Part New York City.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Work</div>
+    <ul class="nav-list">
+      <li>
+        <a href="#">Projects</a>
+        <div class="desc">Things I've built, broken, and rebuilt</div>
+      </li>
+      <li>
+        <a href="#">Writing</a>
+        <div class="desc">Essays, notes, and longer thoughts</div>
+      </li>
+      <li>
+        <a href="#">Photography</a>
+        <div class="desc">Light, color, and composition</div>
+      </li>
+      <li>
+        <a href="travel.html">Travel</a>
+        <div class="desc">Countries I've visited</div>
+      </li>
+      <li>
+        <a href="#">Etc</a>
+        <div class="desc">Everything else that doesn't fit</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Contact</div>
+    <div class="links-row">
+      <span>theo at theogoldstine dot com</span>
+      <a href="https://x.com/theogoldstine">X</a>
+      <a href="https://instagram.com/theogoldstine">Instagram</a>
+    </div>
+  </div>
+
+  <footer>los angeles, ca</footer>
+
+</div>
+
+</body>
+</html>
