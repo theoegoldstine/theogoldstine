@@ -97,6 +97,30 @@
       50% { opacity: 0; }
     }
 
+    .content.typing-hidden * {
+      visibility: hidden;
+    }
+
+    .content.typing-hidden .typed-cursor {
+      visibility: visible;
+    }
+
+    .typed-cursor {
+      animation: blink 0.6s step-end infinite;
+      color: #cc2222;
+    }
+
+    .skip-hint {
+      position: fixed;
+      bottom: 1.2rem;
+      right: 1.5rem;
+      font-size: 11px;
+      color: #661515;
+      letter-spacing: 0.1em;
+      z-index: 2;
+      transition: opacity 0.4s;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 1.2rem;
@@ -148,9 +172,111 @@
 <p class="prompt">@theogoldstine on <a href="https://x.com/theogoldstine">x</a> and <a href="https://instagram.com/theogoldstine">instagram</a></p>
 
 <div class="blank"></div>
-<p class="dim">sys.online — last updated jan 2025<span class="cursor">█</span></p>
+<p class="dim">sys.online — last updated feb 2026<span class="cursor">█</span></p>
 
 </div>
+
+<script>
+(function() {
+  const content = document.querySelector('.content');
+  content.classList.add('typing-hidden');
+
+  // Collect all text nodes in DOM order
+  const textNodes = [];
+  function walk(node) {
+    if (node.nodeType === 3) {
+      const text = node.textContent;
+      if (text.length > 0) {
+        textNodes.push({ node, original: text });
+        node.textContent = '';
+      }
+    } else {
+      for (const child of node.childNodes) walk(child);
+    }
+  }
+  walk(content);
+
+  // Remove the static cursor (we'll add a typing one)
+  const staticCursor = content.querySelector('.cursor');
+  const cursorParent = staticCursor ? staticCursor.parentNode : null;
+  if (staticCursor) staticCursor.style.display = 'none';
+
+  // Create floating typing cursor
+  const typeCursor = document.createElement('span');
+  typeCursor.className = 'typed-cursor';
+  typeCursor.textContent = '\u2588';
+
+  // Skip hint
+  const skipHint = document.createElement('div');
+  skipHint.className = 'skip-hint';
+  skipHint.textContent = '[space] skip';
+  document.body.appendChild(skipHint);
+
+  let nodeIdx = 0;
+  let charIdx = 0;
+  let done = false;
+
+  function finishAll() {
+    if (done) return;
+    done = true;
+    textNodes.forEach(({ node, original }) => { node.textContent = original; });
+    typeCursor.remove();
+    if (staticCursor) staticCursor.style.display = '';
+    content.classList.remove('typing-hidden');
+    skipHint.style.opacity = '0';
+    setTimeout(() => skipHint.remove(), 400);
+  }
+
+  addEventListener('keydown', (e) => {
+    if (e.key === ' ' && !done) {
+      e.preventDefault();
+      finishAll();
+    }
+  });
+
+  function showParents(node) {
+    let el = node.parentNode;
+    while (el && el !== content) {
+      el.style.visibility = 'visible';
+      el = el.parentNode;
+    }
+  }
+
+  function typeNext() {
+    if (done) return;
+    if (nodeIdx >= textNodes.length) {
+      finishAll();
+      return;
+    }
+
+    const entry = textNodes[nodeIdx];
+    const { node, original } = entry;
+    showParents(node);
+    node.parentNode.style.visibility = 'visible';
+
+    // Place cursor next to current node
+    if (typeCursor.parentNode !== node.parentNode) {
+      node.parentNode.appendChild(typeCursor);
+    }
+
+    node.textContent = original.slice(0, charIdx + 1);
+    charIdx++;
+
+    if (charIdx >= original.length) {
+      nodeIdx++;
+      charIdx = 0;
+    }
+
+    // Faster for ASCII art (pre), normal for everything else
+    const inPre = node.parentNode.closest('pre');
+    const delay = inPre ? 3 : 20;
+    setTimeout(typeNext, delay);
+  }
+
+  // Start after a brief pause
+  setTimeout(typeNext, 300);
+})();
+</script>
 
 </body>
 </html>
