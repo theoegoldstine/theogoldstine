@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies — Theo Goldstine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0a;
+      color: #e0e0e0;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      min-height: 100vh;
+    }
+
+    /* CRT scanline overlay */
+    .scanlines {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 100;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+    }
+
+    .vignette {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 99;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.8) 100%);
+    }
+
+    .header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 10;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .header .prompt {
+      color: #888;
+      font-size: 0.75rem;
+    }
+
+    .header h1 {
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e0e0e0;
+    }
+
+    .header a {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #e0e0e0;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.3rem 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .header a:hover {
+      color: #fff;
+      border-color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    .grid {
+      padding: 5rem 2rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      position: relative;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.2) brightness(0.9);
+      transition: filter 0.5s ease;
+    }
+
+    .card:hover img {
+      filter: none;
+    }
+
+    .card .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.2rem;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 60%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .overlay {
+      transform: translateY(0);
+    }
+
+    .overlay .title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .overlay .year {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.2rem;
+      letter-spacing: 0.1em;
+    }
+
+    .overlay .meta {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .overlay .meta span {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .overlay .take {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.6rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .header { padding: 1rem; }
+      .grid {
+        padding: 4.5rem 1rem 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<div class="header">
+  <div class="header-left">
+    <span class="prompt">theo@cinema:~$</span>
+    <h1>movies.log</h1>
+  </div>
+  <a href="index.html">[esc] back</a>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const MOVIES = [
+  {
+    title: 'Barbie',
+    year: 2023,
+    director: 'Greta Gerwig',
+    genre: 'Comedy / Fantasy',
+    take: 'A neon-pink existential crisis disguised as a toy commercial.',
+    poster: 'posters/barbie.jpg'
+  },
+  {
+    title: 'Sunset Boulevard',
+    year: 1950,
+    director: 'Billy Wilder',
+    genre: 'Drama / Film Noir',
+    take: 'Hollywood eating itself alive, narrated by a dead man in a pool.',
+    poster: 'posters/sunset-boulevard.jpg'
+  },
+  {
+    title: 'Chinatown',
+    year: 1974,
+    director: 'Roman Polanski',
+    genre: 'Mystery / Neo-Noir',
+    take: 'The deeper you dig, the worse it gets — forget it, Jake.',
+    poster: 'posters/chinatown.jpg'
+  },
+  {
+    title: 'The Godfather',
+    year: 1972,
+    director: 'Francis Ford Coppola',
+    genre: 'Crime / Drama',
+    take: 'A family business where every promotion comes with a body count.',
+    poster: 'posters/godfather.jpg'
+  },
+  {
+    title: 'Call Me by Your Name',
+    year: 2017,
+    director: 'Luca Guadagnino',
+    genre: 'Romance / Drama',
+    take: 'An Italian summer so beautiful it hurts to watch it end.',
+    poster: 'posters/call-me-by-your-name.jpg'
+  },
+  {
+    title: 'Dune',
+    year: 2021,
+    director: 'Denis Villeneuve',
+    genre: 'Sci-Fi / Drama',
+    take: 'Sand, spice, and the weight of a prophecy you never asked for.',
+    poster: 'posters/dune.jpg'
+  },
+  {
+    title: 'Spider-Man',
+    year: 2002,
+    director: 'Sam Raimi',
+    genre: 'Action / Sci-Fi',
+    take: 'With great power comes the best superhero origin ever filmed.',
+    poster: 'posters/spider-man.jpg'
+  },
+  {
+    title: 'The Best Man Holiday',
+    year: 2013,
+    director: 'Malcolm D. Lee',
+    genre: 'Comedy / Drama',
+    take: 'Old friends, old wounds, and a Christmas that hits different.',
+    poster: 'posters/best-man-holiday.jpg'
+  },
+  {
+    title: 'Brokeback Mountain',
+    year: 2005,
+    director: 'Ang Lee',
+    genre: 'Romance / Drama',
+    take: 'A love story told in silence, distance, and everything left unsaid.',
+    poster: 'posters/brokeback-mountain.jpg'
+  },
+  {
+    title: 'Crazy Rich Asians',
+    year: 2018,
+    director: 'Jon M. Chu',
+    genre: 'Comedy / Romance',
+    take: 'A rom-com with the budget of a small nation and twice the heart.',
+    poster: 'posters/crazy-rich-asians.jpg'
+  },
+  {
+    title: 'The Death of Stalin',
+    year: 2017,
+    director: 'Armando Iannucci',
+    genre: 'Comedy / History',
+    take: 'Bureaucrats scrambling over a corpse — funnier than it should be.',
+    poster: 'posters/death-of-stalin.jpg'
+  },
+  {
+    title: 'Interstellar',
+    year: 2014,
+    director: 'Christopher Nolan',
+    genre: 'Sci-Fi / Drama',
+    take: 'Love as a dimension, time as a thief, and that docking scene.',
+    poster: 'posters/interstellar.jpg'
+  },
+  {
+    title: 'La La Land',
+    year: 2016,
+    director: 'Damien Chazelle',
+    genre: 'Musical / Romance',
+    take: 'A love letter to dreams that cost you the person you dreamed with.',
+    poster: 'posters/la-la-land.jpg'
+  },
+  {
+    title: 'Mamma Mia!',
+    year: 2008,
+    director: 'Phyllida Lloyd',
+    genre: 'Musical / Comedy',
+    take: 'Pure serotonin on a Greek island — no thoughts, just ABBA.',
+    poster: 'posters/mamma-mia.jpg'
+  },
+  {
+    title: 'Minority Report',
+    year: 2002,
+    director: 'Steven Spielberg',
+    genre: 'Sci-Fi / Thriller',
+    take: 'Pre-crime looks great until you are the prediction.',
+    poster: 'posters/minority-report.jpg'
+  },
+  {
+    title: "Schindler's List",
+    year: 1993,
+    director: 'Steven Spielberg',
+    genre: 'Drama / History',
+    take: 'The most important film ever made about the cost of indifference.',
+    poster: 'posters/schindlers-list.jpg'
+  },
+  {
+    title: 'The Social Network',
+    year: 2010,
+    director: 'David Fincher',
+    genre: 'Drama / Biography',
+    take: 'A billion-dollar empire built on loneliness and a stolen idea.',
+    poster: 'posters/social-network.jpg'
+  }
+];
+
+const grid = document.getElementById('grid');
+
+MOVIES.forEach(movie => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <img src="${movie.poster}" alt="${movie.title}">
+    <div class="overlay">
+      <div class="title">${movie.title}</div>
+      <div class="year">${movie.year}</div>
+      <div class="meta">
+        <span>Dir:</span> ${movie.director}<br>
+        <span>Genre:</span> ${movie.genre}
+      </div>
+      <div class="take">"${movie.take}"</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    window.location.href = 'index.html';
+  }
+});
+</script>
+
+</body>
+</html>

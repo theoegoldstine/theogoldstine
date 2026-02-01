@@ -95,11 +95,26 @@
       text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
     }
 
-    .header a:hover {
+    .header a:hover, .header button:hover {
       color: #fff;
       border-color: #00ff88;
       background: rgba(0, 255, 136, 0.15);
       text-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+    }
+
+    .header button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #00ff88;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      padding: 0.3rem 0.8rem;
+      background: none;
+      cursor: inherit;
+      transition: all 0.2s;
+      text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
     }
 
     .info-panel {
@@ -196,6 +211,69 @@
       color: rgba(0, 255, 136, 0.4);
     }
 
+    .country-hover .details {
+      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(0, 255, 136, 0.15);
+      text-align: left;
+    }
+
+    .country-hover .detail-row {
+      font-size: 0.6rem;
+      color: rgba(0, 255, 136, 0.6);
+      padding: 0.12rem 0;
+      line-height: 1.4;
+    }
+
+    .country-hover .detail-label {
+      color: rgba(0, 255, 136, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.5rem;
+    }
+
+    .country-hover .detail-value {
+      color: rgba(0, 255, 136, 0.8);
+      margin-left: 0.3rem;
+    }
+
+    .country-hover .details {
+      margin-top: 0.8rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(0, 255, 136, 0.15);
+      text-align: left;
+    }
+
+    .country-hover .detail-row {
+      font-size: 0.6rem;
+      color: rgba(0, 255, 136, 0.6);
+      padding: 0.15rem 0;
+      line-height: 1.4;
+    }
+
+    .country-hover .detail-row .detail-label {
+      color: rgba(0, 255, 136, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.5rem;
+    }
+
+    .country-hover .detail-row .detail-value {
+      color: rgba(0, 255, 136, 0.8);
+      margin-left: 0.3rem;
+    }
+
+    .country-hover .fun-fact {
+      font-size: 0.55rem;
+      color: rgba(0, 255, 136, 0.5);
+      margin-top: 0.5rem;
+      padding-top: 0.4rem;
+      border-top: 1px solid rgba(0, 255, 136, 0.1);
+      font-style: italic;
+      line-height: 1.5;
+      max-width: 320px;
+    }
+
     .country-list {
       position: fixed;
       top: 4rem;
@@ -262,7 +340,10 @@
     <span class="prompt">theo@earth:~$</span>
     <h1>travel.log</h1>
   </div>
-  <a href="index.html">[esc] back</a>
+  <div style="display:flex;gap:0.6rem;align-items:center;">
+    <button id="pause-btn" onclick="toggleRotation()">[||] pause</button>
+    <a href="index.html">[esc] back</a>
+  </div>
 </div>
 
 <div class="coords" id="coords">
@@ -290,6 +371,15 @@
   <div class="region" id="hover-region"></div>
   <div class="dates" id="hover-dates"></div>
   <div class="status" id="hover-status"></div>
+  <div class="details" id="hover-details">
+    <div class="detail-row"><span class="detail-label">Capital:</span> <span class="detail-value" id="hover-capital"></span></div>
+    <div class="detail-row" id="hover-largest-row" style="display:none"><span class="detail-label">Largest City:</span> <span class="detail-value" id="hover-largest-city"></span></div>
+    <div class="detail-row"><span class="detail-label">Language:</span> <span class="detail-value" id="hover-language"></span></div>
+    <div class="detail-row"><span class="detail-label">Population:</span> <span class="detail-value" id="hover-population"></span></div>
+    <div class="detail-row"><span class="detail-label">Leader:</span> <span class="detail-value" id="hover-leader"></span></div>
+    <div class="detail-row"><span class="detail-label">GDP:</span> <span class="detail-value" id="hover-gdp"></span></div>
+    <div class="detail-row"><span class="detail-label">Currency:</span> <span class="detail-value" id="hover-currency"></span></div>
+  </div>
 </div>
 
 <script type="importmap">
@@ -309,35 +399,64 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Keys here match the `properties.name` values from the TopoJSON (countries-50m)
 const VISITED_DATA = {
-  'United States of America': { display: 'United States',  native: 'United States',     region: 'North America',   dates: 'Home' },
-  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2010, 2024, 2025' },
-  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2024, 2025, 2026' },
-  'Turkey':                    { display: 'Turkiye',        native: 'Türkiye',           region: 'Europe / Asia',   dates: '2022' },
-  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2026' },
-  'Spain':                     { display: 'Spain',          native: 'España',            region: 'Europe',          dates: '2024, 2025' },
-  'Portugal':                  { display: 'Portugal',       native: 'Portugal',          region: 'Europe',          dates: '2025' },
-  'Poland':                    { display: 'Poland',         native: 'Polska',            region: 'Europe',          dates: '2025' },
-  'Netherlands':               { display: 'Netherlands',    native: 'Nederland',         region: 'Europe',          dates: '2022, 2023' },
-  'Italy':                     { display: 'Italy',          native: 'Italia',            region: 'Europe',          dates: '2013, 2022, 2025' },
-  'Ireland':                   { display: 'Ireland',        native: 'Éire',              region: 'Europe',          dates: '2025' },
-  'Iceland':                   { display: 'Iceland',        native: 'Ísland',            region: 'Europe',          dates: '2025' },
-  'Hungary':                   { display: 'Hungary',        native: 'Magyarország',      region: 'Europe',          dates: '2025' },
-  'Greece':                    { display: 'Greece',         native: 'Ελλάδα',            region: 'Europe',          dates: '2022' },
-  'Germany':                   { display: 'Germany',        native: 'Deutschland',       region: 'Europe',          dates: '2022, 2024, 2025' },
-  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025' },
-  'Czechia':                   { display: 'Czechia',        native: 'Česko',             region: 'Europe',          dates: '2025' },
-  'Belgium':                   { display: 'Belgium',        native: 'België',            region: 'Europe',          dates: '2022' },
-  'Austria':                   { display: 'Austria',        native: 'Österreich',        region: 'Europe',          dates: '2022, 2025' },
-  'Thailand':                  { display: 'Thailand',       native: 'ประเทศไทย',           region: 'Southeast Asia',  dates: '2024' },
-  'Taiwan':                    { display: 'Taiwan',         native: '臺灣',               region: 'East Asia',       dates: '2024' },
-  'South Korea':               { display: 'South Korea',    native: '대한민국',              region: 'East Asia',       dates: '2024' },
-  'Japan':                     { display: 'Japan',          native: '日本',               region: 'East Asia',       dates: '2024' },
-  'Israel':                    { display: 'Israel',         native: 'ישראל',             region: 'Middle East',     dates: '2012, 2022, 2023, 2025' },
-  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2023, 2024' },
-  'China':                     { display: 'China',          native: '中国',               region: 'East Asia',       dates: '2024' },
-  'Morocco':                   { display: 'Morocco',        native: 'المغرب',             region: 'North Africa',    dates: '2025' },
-  'Argentina':                 { display: 'Argentina',      native: 'Argentina',         region: 'South America',   dates: '2025' },
-  'Uruguay':                   { display: 'Uruguay',        native: 'Uruguay',           region: 'South America',   dates: '2025' },
+  'United States of America': { display: 'United States',  native: 'United States',     region: 'North America',   dates: 'Home',
+    capital: 'Washington, D.C.', largestCity: 'New York City', language: 'English', population: '335M', leader: 'President Donald Trump', gdp: '$27.36T', currency: 'Dollar ($)' },
+  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2010, 2024, 2025',
+    capital: 'Mexico City', language: 'Spanish (Español)', population: '130M', leader: 'President Claudia Sheinbaum', gdp: '$1.79T', currency: 'Peso (MX$)' },
+  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2024, 2025, 2026',
+    capital: 'London', language: 'English', population: '68M', leader: 'Prime Minister Keir Starmer', gdp: '$3.34T', currency: 'Pound (£)' },
+  'Turkey':                    { display: 'Turkiye',        native: 'Türkiye',           region: 'Europe / Asia',   dates: '2022',
+    capital: 'Ankara', largestCity: 'Istanbul', language: 'Turkish (Türkçe)', population: '85M', leader: 'President Recep Tayyip Erdogan', gdp: '$1.11T', currency: 'Lira (₺)' },
+  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2026',
+    capital: 'Bern', largestCity: 'Zurich', language: 'German (Deutsch) / French (Français) / Italian (Italiano) / Romansh (Rumantsch)', population: '9M', leader: 'President Karin Keller-Sutter', gdp: '$0.91T', currency: 'Franc (CHF)' },
+  'Spain':                     { display: 'Spain',          native: 'España',            region: 'Europe',          dates: '2024, 2025',
+    capital: 'Madrid', language: 'Spanish (Español)', population: '48M', leader: 'Prime Minister Pedro Sanchez', gdp: '$1.58T', currency: 'Euro (€)' },
+  'Portugal':                  { display: 'Portugal',       native: 'Portugal',          region: 'Europe',          dates: '2025',
+    capital: 'Lisbon', language: 'Portuguese (Português)', population: '10M', leader: 'Prime Minister Luis Montenegro', gdp: '$0.29T', currency: 'Euro (€)' },
+  'Poland':                    { display: 'Poland',         native: 'Polska',            region: 'Europe',          dates: '2025',
+    capital: 'Warsaw', language: 'Polish (Polski)', population: '38M', leader: 'Prime Minister Donald Tusk', gdp: '$0.84T', currency: 'Zloty (zł)' },
+  'Netherlands':               { display: 'Netherlands',    native: 'Nederland',         region: 'Europe',          dates: '2022, 2023',
+    capital: 'Amsterdam', language: 'Dutch (Nederlands)', population: '18M', leader: 'Prime Minister Dick Schoof', gdp: '$1.09T', currency: 'Euro (€)' },
+  'Italy':                     { display: 'Italy',          native: 'Italia',            region: 'Europe',          dates: '2013, 2022, 2025',
+    capital: 'Rome', language: 'Italian (Italiano)', population: '59M', leader: 'Prime Minister Giorgia Meloni', gdp: '$2.25T', currency: 'Euro (€)' },
+  'Ireland':                   { display: 'Ireland',        native: 'Éire',              region: 'Europe',          dates: '2025',
+    capital: 'Dublin', language: 'English / Irish (Gaeilge)', population: '5M', leader: 'Taoiseach Micheal Martin', gdp: '$0.55T', currency: 'Euro (€)' },
+  'Iceland':                   { display: 'Iceland',        native: 'Ísland',            region: 'Europe',          dates: '2025',
+    capital: 'Reykjavik', language: 'Icelandic (Íslenska)', population: '380K', leader: 'President Halla Tomasdottir', gdp: '$0.03T', currency: 'Krona (kr)' },
+  'Hungary':                   { display: 'Hungary',        native: 'Magyarország',      region: 'Europe',          dates: '2025',
+    capital: 'Budapest', language: 'Hungarian (Magyar)', population: '10M', leader: 'Prime Minister Viktor Orban', gdp: '$0.21T', currency: 'Forint (Ft)' },
+  'Greece':                    { display: 'Greece',         native: 'Ελλάδα',            region: 'Europe',          dates: '2022',
+    capital: 'Athens', language: 'Greek (Ελληνικά)', population: '10M', leader: 'Prime Minister Kyriakos Mitsotakis', gdp: '$0.24T', currency: 'Euro (€)' },
+  'Germany':                   { display: 'Germany',        native: 'Deutschland',       region: 'Europe',          dates: '2022, 2024, 2025',
+    capital: 'Berlin', language: 'German (Deutsch)', population: '84M', leader: 'Chancellor Friedrich Merz', gdp: '$4.46T', currency: 'Euro (€)' },
+  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025',
+    capital: 'Paris', language: 'French (Français)', population: '68M', leader: 'President Emmanuel Macron', gdp: '$3.03T', currency: 'Euro (€)' },
+  'Czechia':                   { display: 'Czechia',        native: 'Česko',             region: 'Europe',          dates: '2025',
+    capital: 'Prague', language: 'Czech (Čeština)', population: '11M', leader: 'Prime Minister Petr Fiala', gdp: '$0.33T', currency: 'Koruna (Kč)' },
+  'Belgium':                   { display: 'Belgium',        native: 'België',            region: 'Europe',          dates: '2022',
+    capital: 'Brussels', largestCity: 'Antwerp', language: 'Dutch (Nederlands) / French (Français) / German (Deutsch)', population: '12M', leader: 'Prime Minister Bart De Wever', gdp: '$0.63T', currency: 'Euro (€)' },
+  'Austria':                   { display: 'Austria',        native: 'Österreich',        region: 'Europe',          dates: '2022, 2025',
+    capital: 'Vienna', language: 'German (Deutsch)', population: '9M', leader: 'Chancellor Alexander Schallenberg', gdp: '$0.52T', currency: 'Euro (€)' },
+  'Thailand':                  { display: 'Thailand',       native: 'ประเทศไทย',           region: 'Southeast Asia',  dates: '2024',
+    capital: 'Bangkok', language: 'Thai (ไทย)', population: '72M', leader: 'Prime Minister Paetongtarn Shinawatra', gdp: '$0.51T', currency: 'Baht (฿)' },
+  'Taiwan':                    { display: 'Taiwan',         native: '臺灣',               region: 'East Asia',       dates: '2024',
+    capital: 'Taipei', largestCity: 'New Taipei City', language: 'Mandarin (國語)', population: '24M', leader: 'President Lai Ching-te', gdp: '$0.79T', currency: 'Dollar (NT$)' },
+  'South Korea':               { display: 'South Korea',    native: '대한민국',              region: 'East Asia',       dates: '2024',
+    capital: 'Seoul', language: 'Korean (한국어)', population: '52M', leader: 'Acting President Han Duck-soo', gdp: '$1.71T', currency: 'Won (₩)' },
+  'Japan':                     { display: 'Japan',          native: '日本',               region: 'East Asia',       dates: '2024',
+    capital: 'Tokyo', language: 'Japanese (日本語)', population: '125M', leader: 'Prime Minister Shigeru Ishiba', gdp: '$4.21T', currency: 'Yen (¥)' },
+  'Israel':                    { display: 'Israel',         native: 'ישראל',             region: 'Middle East',     dates: '2012, 2022, 2023, 2025',
+    capital: 'Jerusalem', largestCity: 'Tel Aviv', language: 'Hebrew (עברית)', population: '10M', leader: 'Prime Minister Benjamin Netanyahu', gdp: '$0.53T', currency: 'Shekel (₪)' },
+  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2023, 2024',
+    capital: 'New Delhi', largestCity: 'Mumbai', language: 'Hindi (हिन्दी) / English', population: '1.44B', leader: 'Prime Minister Narendra Modi', gdp: '$3.94T', currency: 'Rupee (₹)' },
+  'China':                     { display: 'China',          native: '中国',               region: 'East Asia',       dates: '2024',
+    capital: 'Beijing', largestCity: 'Shanghai', language: 'Mandarin (普通话)', population: '1.41B', leader: 'President Xi Jinping', gdp: '$17.79T', currency: 'Yuan (¥)' },
+  'Morocco':                   { display: 'Morocco',        native: 'المغرب',             region: 'North Africa',    dates: '2025',
+    capital: 'Rabat', largestCity: 'Casablanca', language: 'Arabic (العربية) / Berber (ⵜⴰⵎⴰⵣⵉⵖⵜ)', population: '37M', leader: 'Prime Minister Aziz Akhannouch', gdp: '$0.15T', currency: 'Dirham (MAD)' },
+  'Argentina':                 { display: 'Argentina',      native: 'Argentina',         region: 'South America',   dates: '2025',
+    capital: 'Buenos Aires', language: 'Spanish (Español)', population: '46M', leader: 'President Javier Milei', gdp: '$0.64T', currency: 'Peso (AR$)' },
+  'Uruguay':                   { display: 'Uruguay',        native: 'Uruguay',           region: 'South America',   dates: '2025',
+    capital: 'Montevideo', language: 'Spanish (Español)', population: '3.5M', leader: 'President Yamandu Orsi', gdp: '$0.08T', currency: 'Peso ($U)' },
 };
 const VISITED_SET = new Set(Object.keys(VISITED_DATA));
 
@@ -374,6 +493,12 @@ controls.maxDistance = 6;
 controls.enablePan = false;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.3;
+
+const pauseBtn = document.getElementById('pause-btn');
+window.toggleRotation = function() {
+  controls.autoRotate = !controls.autoRotate;
+  pauseBtn.textContent = controls.autoRotate ? '[||] pause' : '[>] play';
+};
 
 // ── Build globe texture on canvas ─────────────────────
 
@@ -695,6 +820,14 @@ const hoverRegionEl = document.getElementById('hover-region');
 const hoverNativeEl = document.getElementById('hover-native');
 const hoverDatesEl = document.getElementById('hover-dates');
 const hoverStatusEl = document.getElementById('hover-status');
+const hoverCapitalEl = document.getElementById('hover-capital');
+const hoverLanguageEl = document.getElementById('hover-language');
+const hoverPopulationEl = document.getElementById('hover-population');
+const hoverLeaderEl = document.getElementById('hover-leader');
+const hoverLargestRow = document.getElementById('hover-largest-row');
+const hoverLargestCityEl = document.getElementById('hover-largest-city');
+const hoverGdpEl = document.getElementById('hover-gdp');
+const hoverCurrencyEl = document.getElementById('hover-currency');
 
 function getCountryAtUV(uv) {
   // Sample the pick canvas at this UV coordinate
@@ -723,6 +856,18 @@ renderer.domElement.addEventListener('mousemove', (e) => {
       hoverRegionEl.textContent = data.region;
       hoverDatesEl.textContent = data.dates ? '// ' + data.dates : '';
       hoverStatusEl.textContent = '[VISITED]';
+      hoverCapitalEl.textContent = data.capital || '';
+      if (data.largestCity) {
+        hoverLargestCityEl.textContent = data.largestCity;
+        hoverLargestRow.style.display = '';
+      } else {
+        hoverLargestRow.style.display = 'none';
+      }
+      hoverLanguageEl.textContent = data.language || '';
+      hoverPopulationEl.textContent = data.population || '';
+      hoverLeaderEl.textContent = data.leader || '';
+      hoverGdpEl.textContent = data.gdp || '';
+      hoverCurrencyEl.textContent = data.currency || '';
       hoverEl.classList.add('visible');
     } else {
       hoverEl.classList.remove('visible');
@@ -780,6 +925,10 @@ addEventListener('resize', () => {
 addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     window.location.href = 'index.html';
+  }
+  if (e.key === ' ') {
+    e.preventDefault();
+    toggleRotation();
   }
 });
 </script>
