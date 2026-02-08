@@ -196,13 +196,6 @@
       margin-top: 0.4rem;
     }
 
-    .country-hover .dates {
-      font-size: 0.75rem;
-      color: #00ff88;
-      margin-top: 0.6rem;
-      text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
-    }
-
     .country-hover .status {
       font-size: 0.5rem;
       letter-spacing: 0.2em;
@@ -369,7 +362,6 @@
   <div class="name" id="hover-name"></div>
   <div class="native" id="hover-native"></div>
   <div class="region" id="hover-region"></div>
-  <div class="dates" id="hover-dates"></div>
   <div class="status" id="hover-status"></div>
   <div class="details" id="hover-details">
     <div class="detail-row"><span class="detail-label">Capital:</span> <span class="detail-value" id="hover-capital"></span></div>
@@ -819,7 +811,6 @@ const hoverEl = document.getElementById('country-hover');
 const hoverNameEl = document.getElementById('hover-name');
 const hoverRegionEl = document.getElementById('hover-region');
 const hoverNativeEl = document.getElementById('hover-native');
-const hoverDatesEl = document.getElementById('hover-dates');
 const hoverStatusEl = document.getElementById('hover-status');
 const hoverCapitalEl = document.getElementById('hover-capital');
 const hoverLanguageEl = document.getElementById('hover-language');
@@ -871,7 +862,6 @@ renderer.domElement.addEventListener('mousemove', (e) => {
       hoverNameEl.textContent = data.display;
       hoverNativeEl.textContent = data.native !== data.display ? data.native : '';
       hoverRegionEl.textContent = data.region;
-      hoverDatesEl.textContent = data.dates ? '// ' + data.dates : '';
       hoverStatusEl.textContent = '[VISITED]';
       hoverCapitalEl.textContent = data.capital || '';
       if (data.largestCity) {
