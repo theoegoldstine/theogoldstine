@@ -170,50 +170,44 @@
 <div class="container" id="container"></div>
 
 <script>
-const QUOTES = [
-  {
-    text: "The impediment to action advances action. What stands in the way becomes the way.",
-    author: "Marcus Aurelius",
-    source: "Meditations"
-  },
-  {
-    text: "You do not rise to the level of your goals. You fall to the level of your systems.",
-    author: "James Clear",
-    source: "Atomic Habits"
-  },
-  {
-    text: "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.",
-    author: "Antoine de Saint-Exupéry",
-    source: "Wind, Sand and Stars"
-  },
-  {
-    text: "The most common form of despair is not being who you are.",
-    author: "Søren Kierkegaard",
-    source: null
-  },
-  {
-    text: "Tell me, what is it you plan to do with your one wild and precious life?",
-    author: "Mary Oliver",
-    source: "The Summer Day"
-  }
-];
-
 const container = document.getElementById('container');
 
-QUOTES.forEach(q => {
-  const block = document.createElement('div');
-  block.className = 'quote-block';
+function parseTxt(raw) {
+  return raw
+    .split(/\n{2,}/)
+    .map(block => block.trim())
+    .filter(Boolean)
+    .map(block => {
+      const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length < 2) return null;
+      const text = lines[0];
+      const parts = lines[1].split('|').map(s => s.trim());
+      return { text, author: parts[0], source: parts[1] || null };
+    })
+    .filter(Boolean);
+}
 
-  const attribution = q.source
-    ? `<span class="author">${q.author}</span> <span class="source">— ${q.source}</span>`
-    : `<span class="author">${q.author}</span>`;
+function render(quotes) {
+  quotes.forEach(q => {
+    const block = document.createElement('div');
+    block.className = 'quote-block';
+    const attribution = q.source
+      ? `<span class="author">${q.author}</span> <span class="source">— ${q.source}</span>`
+      : `<span class="author">${q.author}</span>`;
+    block.innerHTML = `
+      <div class="quote-text">${q.text}</div>
+      <div class="quote-attribution">${attribution}</div>
+    `;
+    container.appendChild(block);
+  });
+}
 
-  block.innerHTML = `
-    <div class="quote-text">${q.text}</div>
-    <div class="quote-attribution">${attribution}</div>
-  `;
-  container.appendChild(block);
-});
+fetch('quotes.txt')
+  .then(r => r.text())
+  .then(raw => render(parseTxt(raw)))
+  .catch(() => {
+    container.innerHTML = '<p style="color:#555;font-size:0.75rem;">no quotes found.</p>';
+  });
 
 addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
