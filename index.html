@@ -12,8 +12,12 @@
     }
 
     body {
-      background: #0a0808;
-      color: #cc2222;
+      background-color: #020008;
+      background-image:
+        linear-gradient(rgba(0, 200, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      color: #b0d0f0;
       font-family: 'Courier New', Courier, monospace;
       font-size: 15px;
       line-height: 1.6;
@@ -30,13 +34,13 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 40%;
-      background: linear-gradient(to top, rgba(160, 20, 20, 0.08), transparent);
+      height: 50%;
+      background: linear-gradient(to top, rgba(80, 0, 160, 0.12), rgba(0, 180, 255, 0.04), transparent);
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Faint skyline silhouette */
+    /* Skyline silhouette */
     body::after {
       content: '';
       position: fixed;
@@ -45,11 +49,29 @@
       width: 100%;
       height: 120px;
       background:
-        linear-gradient(to top, rgba(15, 8, 8, 0.9) 0%, transparent 100%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L0 95 L40 95 L40 70 L55 70 L55 85 L70 85 L70 60 L80 60 L80 55 L90 55 L90 60 L100 60 L100 40 L108 40 L108 35 L112 35 L112 40 L120 40 L120 75 L140 75 L140 65 L160 65 L160 80 L200 80 L200 50 L210 50 L210 30 L215 30 L215 25 L220 25 L220 30 L225 30 L225 50 L235 50 L235 80 L260 80 L260 90 L300 90 L300 70 L310 70 L310 45 L320 45 L320 40 L330 40 L330 45 L340 45 L340 70 L350 70 L350 85 L400 85 L400 75 L420 75 L420 55 L430 55 L430 20 L435 20 L435 15 L440 15 L440 20 L445 20 L445 55 L455 55 L455 75 L500 75 L500 90 L540 90 L540 80 L560 80 L560 65 L575 65 L575 50 L580 50 L580 65 L595 65 L595 80 L620 80 L620 85 L680 85 L680 70 L700 70 L700 60 L720 60 L720 45 L728 45 L728 35 L732 35 L732 45 L740 45 L740 60 L760 60 L760 75 L800 75 L800 90 L850 90 L850 80 L870 80 L870 55 L880 55 L880 40 L890 40 L890 55 L900 55 L900 80 L940 80 L940 85 L1000 85 L1000 70 L1020 70 L1020 50 L1030 50 L1030 35 L1035 35 L1035 30 L1040 30 L1040 35 L1045 35 L1045 50 L1055 50 L1055 75 L1100 75 L1100 90 L1150 90 L1150 85 L1200 85 L1200 120 Z' fill='%23120a0a'/%3E%3C/svg%3E") bottom/100% 120px no-repeat;
+        linear-gradient(to top, rgba(2, 0, 8, 0.95) 0%, transparent 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L0 95 L40 95 L40 70 L55 70 L55 85 L70 85 L70 60 L80 60 L80 55 L90 55 L90 60 L100 60 L100 40 L108 40 L108 35 L112 35 L112 40 L120 40 L120 75 L140 75 L140 65 L160 65 L160 80 L200 80 L200 50 L210 50 L210 30 L215 30 L215 25 L220 25 L220 30 L225 30 L225 50 L235 50 L235 80 L260 80 L260 90 L300 90 L300 70 L310 70 L310 45 L320 45 L320 40 L330 40 L330 45 L340 45 L340 70 L350 70 L350 85 L400 85 L400 75 L420 75 L420 55 L430 55 L430 20 L435 20 L435 15 L440 15 L440 20 L445 20 L445 55 L455 55 L455 75 L500 75 L500 90 L540 90 L540 80 L560 80 L560 65 L575 65 L575 50 L580 50 L580 65 L595 65 L595 80 L620 80 L620 85 L680 85 L680 70 L700 70 L700 60 L720 60 L720 45 L728 45 L728 35 L732 35 L732 45 L740 45 L740 60 L760 60 L760 75 L800 75 L800 90 L850 90 L850 80 L870 80 L870 55 L880 55 L880 40 L890 40 L890 55 L900 55 L900 80 L940 80 L940 85 L1000 85 L1000 70 L1020 70 L1020 50 L1030 50 L1030 35 L1035 35 L1035 30 L1040 30 L1040 35 L1045 35 L1045 50 L1055 50 L1055 75 L1100 75 L1100 90 L1150 90 L1150 85 L1200 85 L1200 120 Z' fill='%230a0320'/%3E%3C/svg%3E") bottom/100% 120px no-repeat;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.7;
+      opacity: 0.85;
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 0, 0, 0.08) 3px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 5;
     }
 
     .content {
@@ -57,39 +79,68 @@
       z-index: 1;
     }
 
-    a {
-      color: #cc2222;
+    pre {
+      overflow-x: auto;
+      font-size: clamp(6px, 2.5vw, 15px);
+      color: #00eeff;
+      text-shadow:
+        0 0 8px rgba(0, 238, 255, 0.9),
+        0 0 20px rgba(0, 238, 255, 0.4),
+        0 0 40px rgba(0, 150, 255, 0.2);
     }
 
-    a:hover {
-      background: #cc2222;
-      color: #0a0808;
+    .location {
+      font-size: 12px;
+      color: #5533aa;
+      letter-spacing: 0.1em;
+    }
+
+    .dim {
+      color: #cc00ff;
+      text-shadow: 0 0 8px rgba(200, 0, 255, 0.5);
+    }
+
+    a {
+      text-decoration: none;
     }
 
     .prompt::before {
       content: '> ';
+      color: #444466;
     }
+
+    /* Nav link colors */
+    .c-cyan  { color: #00eeff; }
+    .c-cyan a { color: #00eeff; text-shadow: 0 0 6px rgba(0, 238, 255, 0.6); }
+    .c-cyan a:hover { background: #00eeff; color: #020008; text-shadow: none; }
+
+    .c-magenta { color: #ff2aff; }
+    .c-magenta a { color: #ff2aff; text-shadow: 0 0 6px rgba(255, 42, 255, 0.6); }
+    .c-magenta a:hover { background: #ff2aff; color: #020008; text-shadow: none; }
+
+    .c-green { color: #00ff88; }
+    .c-green a { color: #00ff88; text-shadow: 0 0 6px rgba(0, 255, 136, 0.6); }
+    .c-green a:hover { background: #00ff88; color: #020008; text-shadow: none; }
+
+    .c-yellow { color: #ffdd00; }
+    .c-yellow a { color: #ffdd00; text-shadow: 0 0 6px rgba(255, 221, 0, 0.6); }
+    .c-yellow a:hover { background: #ffdd00; color: #020008; text-shadow: none; }
+
+    .c-orange { color: #ff6622; }
+    .c-orange a { color: #ff6622; text-shadow: 0 0 6px rgba(255, 102, 34, 0.6); }
+    .c-orange a:hover { background: #ff6622; color: #020008; text-shadow: none; }
+
+    .c-pink { color: #ff4488; }
+    .c-pink a { color: #ff4488; text-shadow: 0 0 6px rgba(255, 68, 136, 0.6); }
+    .c-pink a:hover { background: #ff4488; color: #020008; text-shadow: none; }
 
     .blank {
       height: 1.6em;
     }
 
-    .dim {
-      color: #661515;
-    }
-
-    .location {
-      font-size: 12px;
-      color: #4a1010;
-      letter-spacing: 0.1em;
-    }
-
-    pre {
-      overflow-x: auto;
-      font-size: clamp(6px, 2.5vw, 15px);
-    }
-
     .cursor {
+      color: #00ff41;
+      text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
       animation: blink 1s step-end infinite;
     }
 
@@ -107,7 +158,8 @@
 
     .typed-cursor {
       animation: blink 0.6s step-end infinite;
-      color: #cc2222;
+      color: #00ff41;
+      text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
     }
 
     .skip-hint {
@@ -115,10 +167,27 @@
       bottom: 1.2rem;
       right: 1.5rem;
       font-size: 11px;
-      color: #661515;
+      color: #3322aa;
       letter-spacing: 0.1em;
-      z-index: 2;
+      z-index: 6;
       transition: opacity 0.4s;
+    }
+
+    .sys-line {
+      color: #4455aa;
+      text-shadow: none;
+    }
+
+    .nav-cursor {
+      display: inline-block;
+      margin-left: 0.4em;
+      animation: blink 0.6s step-end infinite;
+      color: #00ff41;
+      text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+    }
+
+    .nav-selected {
+      filter: brightness(1.6);
     }
 
     @media (max-width: 600px) {
@@ -135,6 +204,8 @@
 </head>
 <body>
 
+<div class="scanlines"></div>
+
 <div class="content">
 
 <pre>
@@ -144,32 +215,32 @@
   | | | | | |  __/ (_) | |_| | (_) | | (_| \__ \ |_| | | | |  __/
   |_| |_| |_|\___|\___/ \____|\___/|_|\__,_|___/\__|_|_| |_|\___|
 </pre>
+<p class="location">san francisco, california — 37.7749° N, 122.4194° W</p>
 <p class="location">los angeles, california — 34.0522° N, 118.2437° W</p>
+<p class="location">new york, new york — 40.7128° N, 74.0060° W</p>
 
 <div class="blank"></div>
 
 <p class="dim">-- about.txt --</p>
 <div class="blank"></div>
 <p>this is a place for me to share my thoughts on the world, what i have to say, the lens i see life through, and the projects i'm working on.</p>
-<div class="blank"></div>
-<p>part los angeles. part san francisco. part new york city.</p>
 
 <div class="blank"></div>
 <p class="dim">-- nav --</p>
 <div class="blank"></div>
-<p class="prompt"><a href="photography.html">photography</a> — light, color, and composition</p>
-<p class="prompt"><a href="music.html">music</a> — songs i like</p>
-<p class="prompt"><a href="travel.html">travel</a> — countries i've visited</p>
-<p class="prompt"><a href="movies.html">movies</a> — films i love</p>
-<p class="prompt"><a href="quotes.html">quotes</a> — words i keep</p>
+<p class="prompt c-cyan nav-item" data-href="photography.html"><a href="photography.html">photography</a> — light, color, and composition</p>
+<p class="prompt c-magenta nav-item" data-href="music.html"><a href="music.html">music</a> — songs i like</p>
+<p class="prompt c-green nav-item" data-href="travel.html"><a href="travel.html">travel</a> — countries i've visited</p>
+<p class="prompt c-yellow nav-item" data-href="movies.html"><a href="movies.html">movies</a> — films i love</p>
+<p class="prompt c-orange nav-item" data-href="quotes.html"><a href="quotes.html">quotes</a> — words i keep</p>
 <div class="blank"></div>
 <p class="dim">-- links --</p>
 <div class="blank"></div>
-<p class="prompt">email — theo at theogoldstine dot com</p>
-<p class="prompt">@theogoldstine on <a href="https://instagram.com/theogoldstine">instagram</a></p>
+<p class="prompt c-pink nav-item" data-href="mailto:theo@theogoldstine.com">email — theo at theogoldstine dot com</p>
+<p class="prompt c-pink nav-item" data-href="https://instagram.com/theogoldstine">@theogoldstine on <a href="https://instagram.com/theogoldstine">instagram</a></p>
 
 <div class="blank"></div>
-<p class="dim">sys.online — last updated feb 2026<span class="cursor">█</span></p>
+<p class="sys-line">sys.online — last updated feb 2026<span class="cursor">█</span></p>
 
 </div>
 
@@ -213,6 +284,21 @@
   let charIdx = 0;
   let done = false;
 
+  // Nav cursor (moves between items after typing finishes)
+  const navCursor = document.createElement('span');
+  navCursor.className = 'nav-cursor';
+  navCursor.textContent = '█';
+
+  let navIndex = -1; // -1 = resting at sys.online cursor
+  const navItems = Array.from(document.querySelectorAll('.nav-item'));
+
+  function updateNav() {
+    if (navCursor.parentNode) navCursor.parentNode.removeChild(navCursor);
+    navItems.forEach((el, i) => el.classList.toggle('nav-selected', i === navIndex));
+    if (staticCursor) staticCursor.style.opacity = navIndex === -1 ? '' : '0';
+    if (navIndex >= 0) navItems[navIndex].appendChild(navCursor);
+  }
+
   function finishAll() {
     if (done) return;
     done = true;
@@ -225,9 +311,21 @@
   }
 
   addEventListener('keydown', (e) => {
-    if (e.key === ' ' && !done) {
+    if (!done) {
+      if (e.key === ' ') { e.preventDefault(); finishAll(); }
+      return;
+    }
+    if (e.key === 'ArrowDown') {
       e.preventDefault();
-      finishAll();
+      navIndex = Math.min(navIndex + 1, navItems.length - 1);
+      updateNav();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      navIndex = Math.max(navIndex - 1, -1);
+      updateNav();
+    } else if (e.key === 'Enter' && navIndex >= 0) {
+      const href = navItems[navIndex].dataset.href;
+      if (href) window.location.href = href;
     }
   });
 
