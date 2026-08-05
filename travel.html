@@ -364,6 +364,7 @@
   <div class="region" id="hover-region"></div>
   <div class="status" id="hover-status"></div>
   <div class="details" id="hover-details">
+    <div class="detail-row"><span class="detail-label">Visited:</span> <span class="detail-value" id="hover-dates"></span></div>
     <div class="detail-row"><span class="detail-label">Capital:</span> <span class="detail-value" id="hover-capital"></span></div>
     <div class="detail-row" id="hover-largest-row" style="display:none"><span class="detail-label">Largest City:</span> <span class="detail-value" id="hover-largest-city"></span></div>
     <div class="detail-row"><span class="detail-label">Language:</span> <span class="detail-value" id="hover-language"></span></div>
@@ -815,6 +816,7 @@ const hoverNameEl = document.getElementById('hover-name');
 const hoverRegionEl = document.getElementById('hover-region');
 const hoverNativeEl = document.getElementById('hover-native');
 const hoverStatusEl = document.getElementById('hover-status');
+const hoverDatesEl = document.getElementById('hover-dates');
 const hoverCapitalEl = document.getElementById('hover-capital');
 const hoverLanguageEl = document.getElementById('hover-language');
 const hoverPopulationEl = document.getElementById('hover-population');
@@ -866,6 +868,7 @@ renderer.domElement.addEventListener('mousemove', (e) => {
       hoverNativeEl.textContent = data.native !== data.display ? data.native : '';
       hoverRegionEl.textContent = data.region;
       hoverStatusEl.textContent = '[VISITED]';
+      hoverDatesEl.textContent = data.dates || '';
       hoverCapitalEl.textContent = data.capital || '';
       if (data.largestCity) {
         hoverLargestCityEl.textContent = data.largestCity;
