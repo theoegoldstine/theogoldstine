@@ -353,8 +353,8 @@
 <div class="info-panel">
   <div class="stat-block">
     <div class="stat-label">countries visited</div>
-    <div class="stat-value">29</div>
-    <div class="stat-sub">/ 195 total &mdash; 14.9%</div>
+    <div class="stat-value">30</div>
+    <div class="stat-sub">/ 195 total &mdash; 15.4%</div>
   </div>
 </div>
 
@@ -394,13 +394,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const VISITED_DATA = {
   'United States of America': { display: 'United States',  native: 'United States',     region: 'North America',   dates: 'Home',
     capital: 'Washington, D.C.', largestCity: 'New York City', language: 'English', population: '335M', leader: 'President Donald Trump', gdp: '$27.36T', currency: 'Dollar ($)', timezone: 'America/Los_Angeles' },
-  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2010, 2024, 2025',
+  'Mexico':                    { display: 'Mexico',         native: 'México',            region: 'North America',   dates: '2011, 2023, 2024',
     capital: 'Mexico City', language: 'Spanish (Español)', population: '130M', leader: 'President Claudia Sheinbaum', gdp: '$1.79T', currency: 'Peso (MX$)', timezone: 'America/Mexico_City' },
-  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2024, 2025, 2026',
+  'United Kingdom':            { display: 'United Kingdom', native: 'United Kingdom',    region: 'Europe',          dates: '2022, 2023, 2025, 2026',
     capital: 'London', language: 'English', population: '68M', leader: 'Prime Minister Keir Starmer', gdp: '$3.34T', currency: 'Pound (£)', timezone: 'Europe/London' },
   'Turkey':                    { display: 'Turkiye',        native: 'Türkiye',           region: 'Europe / Asia',   dates: '2022',
     capital: 'Ankara', largestCity: 'Istanbul', language: 'Turkish (Türkçe)', population: '85M', leader: 'President Recep Tayyip Erdogan', gdp: '$1.11T', currency: 'Lira (₺)', timezone: 'Europe/Istanbul' },
-  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2026',
+  'Switzerland':               { display: 'Switzerland',    native: 'Schweiz',           region: 'Europe',          dates: '2025, 2026',
     capital: 'Bern', largestCity: 'Zurich', language: 'German (Deutsch) / French (Français) / Italian (Italiano) / Romansh (Rumantsch)', population: '9M', leader: 'President Karin Keller-Sutter', gdp: '$0.91T', currency: 'Franc (CHF)', timezone: 'Europe/Zurich' },
   'Spain':                     { display: 'Spain',          native: 'España',            region: 'Europe',          dates: '2024, 2025',
     capital: 'Madrid', language: 'Spanish (Español)', population: '48M', leader: 'Prime Minister Pedro Sanchez', gdp: '$1.58T', currency: 'Euro (€)', timezone: 'Europe/Madrid' },
@@ -422,7 +422,7 @@ const VISITED_DATA = {
     capital: 'Athens', language: 'Greek (Ελληνικά)', population: '10M', leader: 'Prime Minister Kyriakos Mitsotakis', gdp: '$0.24T', currency: 'Euro (€)', timezone: 'Europe/Athens' },
   'Germany':                   { display: 'Germany',        native: 'Deutschland',       region: 'Europe',          dates: '2022, 2024, 2025',
     capital: 'Berlin', language: 'German (Deutsch)', population: '84M', leader: 'Chancellor Friedrich Merz', gdp: '$4.46T', currency: 'Euro (€)', timezone: 'Europe/Berlin' },
-  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025',
+  'France':                    { display: 'France',         native: 'France',            region: 'Europe',          dates: '2016, 2022, 2025, 2026',
     capital: 'Paris', language: 'French (Français)', population: '68M', leader: 'President Emmanuel Macron', gdp: '$3.03T', currency: 'Euro (€)', timezone: 'Europe/Paris' },
   'Czechia':                   { display: 'Czechia',        native: 'Česko',             region: 'Europe',          dates: '2025',
     capital: 'Prague', language: 'Czech (Čeština)', population: '11M', leader: 'Prime Minister Petr Fiala', gdp: '$0.33T', currency: 'Koruna (Kč)', timezone: 'Europe/Prague' },
@@ -440,7 +440,9 @@ const VISITED_DATA = {
     capital: 'Tokyo', language: 'Japanese (日本語)', population: '125M', leader: 'Prime Minister Shigeru Ishiba', gdp: '$4.21T', currency: 'Yen (¥)', timezone: 'Asia/Tokyo' },
   'Israel':                    { display: 'Israel',         native: 'ישראל',             region: 'Middle East',     dates: '2012, 2022, 2023, 2025',
     capital: 'Jerusalem', largestCity: 'Tel Aviv', language: 'Hebrew (עברית)', population: '10M', leader: 'Prime Minister Benjamin Netanyahu', gdp: '$0.53T', currency: 'Shekel (₪)', timezone: 'Asia/Jerusalem' },
-  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2023, 2024',
+  'Palestine':                 { display: 'Palestine',      native: 'فلسطين',            region: 'Middle East',     dates: '2022, 2023, 2025',
+    capital: 'Ramallah', largestCity: 'Gaza City', language: 'Arabic (العربية)', population: '5.4M', leader: 'President Mahmoud Abbas', gdp: '$0.02T', currency: 'Shekel (₪) / Dinar (JD)', timezone: 'Asia/Gaza' },
+  'India':                     { display: 'India',          native: 'भारत',               region: 'South Asia',      dates: '2022, 2024',
     capital: 'New Delhi', largestCity: 'Mumbai', language: 'Hindi (हिन्दी) / English', population: '1.44B', leader: 'Prime Minister Narendra Modi', gdp: '$3.94T', currency: 'Rupee (₹)', timezone: 'Asia/Kolkata' },
   'China':                     { display: 'China',          native: '中国',               region: 'East Asia',       dates: '2024',
     capital: 'Beijing', largestCity: 'Shanghai', language: 'Mandarin (普通话)', population: '1.41B', leader: 'President Xi Jinping', gdp: '$17.79T', currency: 'Yuan (¥)', timezone: 'Asia/Shanghai' },
@@ -766,6 +768,7 @@ const MARKERS = [
   { name: 'South Korea', lat: 35.9, lng: 127.8 },
   { name: 'Japan', lat: 36.2, lng: 138.3 },
   { name: 'Israel', lat: 31.0, lng: 34.9 },
+  { name: 'Palestine', lat: 31.9, lng: 35.2 },
   { name: 'India', lat: 20.6, lng: 79.0 },
   { name: 'China', lat: 35.9, lng: 104.2 },
   { name: 'Morocco', lat: 31.8, lng: -7.1 },
